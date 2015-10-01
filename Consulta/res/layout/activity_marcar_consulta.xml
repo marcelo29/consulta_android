@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/spnLocal"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnEspecialidade"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/spnData"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spnMedico"
+            android:layout_width="152dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnMostraNoMapa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mostrarMapa" />
+
+        <Button
+            android:id="@+id/btnAplicaFiltro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/msg_aplica_filtro" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvMarcarConsultas"
+        android:layout_width="match_parent"
+        android:layout_height="126dp"
+        android:layout_weight="0.42" >
+    </ListView>
+
+    <Button
+        android:id="@+id/btnConfirma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/msg_confirma" />
+
+</LinearLayout>

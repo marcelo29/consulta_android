@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Consulta</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">SuaConsulta</string>
+    <string name="title_activity_marcar_consulta">SuaConsulta</string>
+    <string name="title_activity_consultas_marcadas">SuaConsulta</string>
+    <string name="title_activity_mapas">SuaConsulta</string>
+
+    <!-- app -->
+
+    <string name="usuario">Usuário</string>
+    <string name="senha">Senha</string>
+    <string name="msg_erro_invalido_login">Usuário ou senha inválidos</string>
+    <string name="msg_erro_validacao_login">Preencha os campos vazios!!!</string>
+    <string name="msg_aplica_filtro">Aplicar Filtro</string>
+    <string name="msg_confirma">Confirmar</string>
+    <string name="medico">Médico</string>
+    <string name="especialidade">Especialidade</string>
+    <string name="local">Local</string>
+    <string name="data">Data</string>
+    <string name="nome">Nome</string>
+    <string name="cliente">Cliente</string>
+
+    <!-- menu -->
+    <string name="mostrarMapa">Mostrar o Mapa</string>
+    <string name="endereco">Endereço</string>
+    <string name="marcarConsulta">Marcar Consultas</string>
+    <string name="desmarcarConsulta">Desmarcar</string>
+
+</resources>
