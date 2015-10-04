@@ -39,10 +39,6 @@
             android:value="AIzaSyD-SFCOS7k046N011yVWDgBuF9ZrkOXfYA " />
 
         <activity
-            android:name=".TestDAO"
-            android:label="@string/title_activity_login" >
-        </activity>
-        <activity
             android:name=".Login"
             android:label="@string/title_activity_login" >
             <intent-filter>

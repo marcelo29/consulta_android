@@ -9,27 +9,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import br.com.android.consulta.modelo.bean.Especialidade;
 
+// faz o tratamento da tabela especialidade
 public class EspecialidadeDAO extends SQLiteOpenHelper {
 
-	// nome do banco
-	private static final String DATABASE = "db_consulta";
-	// versao
-	private static final int VERSAO = 1;
 	// tabela
 	private static final String TABELA = "especialidade";
 
 	public EspecialidadeDAO(Context context) {
-		super(context, DATABASE, null, VERSAO);
+		super(context, DBDAO.DATABASE, null, DBDAO.VERSAO);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
+
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+
 	}
 
 	public void cadastrar(Especialidade especialidade) {
@@ -38,30 +35,32 @@ public class EspecialidadeDAO extends SQLiteOpenHelper {
 		values.put("nome", especialidade.getNome());
 
 		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DATABASE, "Cadastro "+TABELA);
+		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
 	// listar as especialidades
 	public ArrayList<Especialidade> listar() {
 		ArrayList<Especialidade> lista = new ArrayList<Especialidade>();
 
-		String sql = "Select nome from " + TABELA + " order by nome";
+		String sql = "select * from " + TABELA + " order by nome";
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
 		try {
 			while (cursor.moveToNext()) {
 				Especialidade especialidade = new Especialidade();
-				especialidade.setNome(cursor.getString(0));
+				especialidade.setId(cursor.getInt(0));
+				especialidade.setNome(cursor.getString(1));
 				lista.add(especialidade);
 			}
+			return lista;
 		} catch (Exception e) {
 			Log.e("", e.getMessage());
+			return null;
 		} finally {
 			cursor.close();
 		}
 
-		return lista;
 	}
 
 }

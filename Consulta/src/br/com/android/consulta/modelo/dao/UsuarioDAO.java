@@ -6,23 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import br.com.android.consulta.modelo.bean.Perfil;
 import br.com.android.consulta.modelo.bean.Usuario;
 
 // encapsula o tratamento com o banco de dados
 public class UsuarioDAO extends SQLiteOpenHelper {
 
-	// nome do banco
-	private static final String DATABASE = "db_consulta";
-	// versao
-	private static final int VERSAO = 1;
 	// tabela
 	private static final String TABELA = "usuario";
 
 	// construtor recebendo o contexto
 	public UsuarioDAO(Context context) {
 		// recebe o contexto, o banco e a versao
-		super(context, DATABASE, null, VERSAO);
+		super(context, DBDAO.DATABASE, null, DBDAO.VERSAO);
 	}
 
 	@Override // cria o banco
@@ -57,7 +52,7 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 		values.put("email", usuario.getEmail());
 
 		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DATABASE, "Cadastro " + TABELA);
+		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
 	// verifica se o bate usuario e senha
@@ -80,21 +75,26 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 	}
 
 	// retorna perfil do usuario
-	public String retornaPerfilUsuario(String usuario) {
+	public Usuario retornaIdAndPerfilUsuario(String usuario) {
 		Cursor cursor = getReadableDatabase().query(TABELA, null, "login = ?", new String[] { usuario }, null, null,
 				null);
 
 		// move para o primeiro registro do cursor
 		try {
 			cursor.moveToFirst();
-			return cursor.getString(3);
+			Usuario user = new Usuario();
+			user.setId(cursor.getInt(0));
+			user.setLogin(cursor.getString(1));
+			user.setEmail(cursor.getString(2));
+			user.setPerfil(cursor.getString(3));
+			return user;
 		} catch (Exception e) {
 			Log.e(TABELA, e.getMessage());
+			return null;
 		} finally {
 			cursor.close();
 		}
 
-		return null;
 	}
 
 }

@@ -11,38 +11,20 @@ import br.com.android.consulta.modelo.bean.LocalAtendimento;
 
 public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 
-	// nome do banco
-	private static final String DATABASE = "db_consulta";
-	// versao
-	private static final int VERSAO = 1;
-	// tabela
 	private static final String TABELA = "local_atendimento";
 
 	public LocalAtendimentoDAO(Context context) {
-		super(context, DATABASE, null, VERSAO);
+		super(context, DBDAO.DATABASE, null, DBDAO.VERSAO);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// string p criar a tabela no banco de dados
-		String ddl = "create table " + TABELA + "(_id integer primary key autoincrement, nome text, endereco text)";
 
-		// cria a tabela no banco
-		db.execSQL(ddl);
-		Log.i(DATABASE, TABELA);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		String ddl = "create table if not exists " + TABELA
-				+ "(_id integer primary key autoincrement, nome text, endereco text)";
 
-		ddl = "drop table if exists " + TABELA;
-
-		// executa o drop caso a tabela exista
-		db.execSQL(ddl);
-
-		onCreate(db);
 	}
 
 	public void cadastrar(LocalAtendimento local) {
@@ -52,7 +34,7 @@ public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 		values.put("endereco", local.getEndereco());
 
 		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DATABASE, "Cadastro "+TABELA);
+		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
 	public ArrayList<String> listarLugarEndereco() {
@@ -78,15 +60,16 @@ public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 	public ArrayList<LocalAtendimento> listarLugar() {
 		ArrayList<LocalAtendimento> lista = new ArrayList<LocalAtendimento>();
 
-		String sql = "Select nome,endereco from " + TABELA + " order by endereco";
+		String sql = "Select * from " + TABELA + " order by endereco";
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
 		try {
 			while (cursor.moveToNext()) {
 				LocalAtendimento lugar = new LocalAtendimento();
-				lugar.setNome(cursor.getString(0));
-				lugar.setEndereco(cursor.getString(1));
+				lugar.setId(cursor.getInt(0));
+				lugar.setNome(cursor.getString(1));
+				lugar.setEndereco(cursor.getString(2));
 				lista.add(lugar);
 			}
 		} catch (Exception e) {

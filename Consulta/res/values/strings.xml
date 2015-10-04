@@ -5,8 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">SuaConsulta</string>
-    <string name="title_activity_marcar_consulta">SuaConsulta</string>
-    <string name="title_activity_consultas_marcadas">SuaConsulta</string>
+    <string name="title_activity_marcar_consulta">Marcar Consultas</string>
+    <string name="title_activity_consultas_marcadas">Consultas Marcadas</string>
     <string name="title_activity_mapas">SuaConsulta</string>
 
     <!-- app -->

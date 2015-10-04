@@ -1,14 +1,12 @@
 package br.com.android.consulta.modelo.bean;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class AgendaMedico {
 
 	private int id;
 	private Medico medico;
-	private Date data;
-	private String hora;
+	private String data, hora;
 	private LocalAtendimento localAtendimento;
 	private Situacao situacao;
 	private ArrayList<ConsultaMarcada> listaConsultaMarcada;
@@ -17,7 +15,7 @@ public class AgendaMedico {
 
 	}
 
-	public AgendaMedico(int id, Medico medico, Date data, String hora, LocalAtendimento localAtendimento,
+	public AgendaMedico(int id, Medico medico, String data, String hora, LocalAtendimento localAtendimento,
 			Situacao situacao, ArrayList<ConsultaMarcada> listaConsultaMarcada) {
 		this.id = id;
 		this.medico = medico;
@@ -44,11 +42,11 @@ public class AgendaMedico {
 		this.medico = medico;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date date) {
+	public void setData(String date) {
 		this.data = date;
 	}
 

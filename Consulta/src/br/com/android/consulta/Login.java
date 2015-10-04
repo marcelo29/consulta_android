@@ -3,23 +3,21 @@ package br.com.android.consulta;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import br.com.android.consulta.modelo.bean.Usuario;
-import br.com.android.consulta.modelo.dao.DBHelper;
+import br.com.android.consulta.modelo.dao.DBDAO;
+import br.com.android.consulta.modelo.dao.SessaoDAO;
 import br.com.android.consulta.modelo.dao.UsuarioDAO;
 
 // gerencia o login da aplicacoa
 public class Login extends Activity {
-
-	protected static final String PREFERENCE_NAME = "LOGIN";
-	// componentes da tela
+	// componentes da tela /
 	private EditText edtUsuario, edtSenha;
 	private Button btnLogar;
 
@@ -28,9 +26,19 @@ public class Login extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		// Cria todas as tabelas
-		DBHelper helper = new DBHelper(this);
-		helper.onCreate(helper.getWritableDatabase());
+		DBDAO db = new DBDAO(this);
+		// pega permissao de escrita no banco
+		SQLiteDatabase escrita = db.getWritableDatabase();
+
+		// db.drop(escrita);
+		// Se o banco nao existir
+		if (!db.doesDatabaseExist(this, db.getDatabaseName())) {
+			// cria e popula o banco
+			db.onCreate(escrita);
+		}
+
+		// Log.i("", new
+		// AgendaMedicoDAO(this).retornaAgendaMedico(2).toString());
 
 		// relaciona xml com codigo java
 		edtUsuario = (EditText) findViewById(R.id.edtUsuario);
@@ -67,7 +75,8 @@ public class Login extends Activity {
 					// verifica se bate usuario e senha
 					if (validacao) {
 						if (dao.Logar(usuario.getLogin(), usuario.getSenha())) {
-							registraPerfil(usuario.getLogin(), dao);
+							// registra usuario na sessao
+							new SessaoDAO(Login.this).setUsuario(usuario.getLogin(), dao);
 
 							// carrega novo layotu
 							Intent intent = new Intent(Login.this, ConsultasMarcadas.class);
@@ -105,19 +114,6 @@ public class Login extends Activity {
 			validacao = false;
 		}
 		return validacao;
-	}
-
-	// registra o perfil e usuario logado
-	private void registraPerfil(String usuario, UsuarioDAO dao) {
-		String perfilUsuario = dao.retornaPerfilUsuario(usuario);
-
-		SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-
-		editor.putString("USUARIO_LOGADO", usuario);
-		editor.putString("PERFIL_USUARIO", perfilUsuario);
-
-		editor.commit();
 	}
 
 }

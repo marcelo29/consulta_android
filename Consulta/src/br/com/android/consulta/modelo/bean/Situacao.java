@@ -4,7 +4,7 @@ public enum Situacao {
 
 	Disponivel("D-Disponivel"), Marcada("M-Marcada"), Cancelada("C-Cancelada");
 	
-	private String situacao;
+	public String situacao;
 	
 	private Situacao(String situacao) {
 		this.situacao = situacao;
