@@ -25,7 +25,7 @@
     <string name="cliente">Cliente</string>
 
     <!-- menu -->
-    <string name="mostrarMapa">Mostrar o Mapa</string>
+    <string name="mostrarMapa">Mostrar no Mapa</string>
     <string name="endereco">Endereço</string>
     <string name="marcarConsulta">Marcar Consultas</string>
     <string name="desmarcarConsulta">Desmarcar</string>

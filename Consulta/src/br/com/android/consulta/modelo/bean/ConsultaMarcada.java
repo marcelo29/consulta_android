@@ -2,13 +2,14 @@ package br.com.android.consulta.modelo.bean;
 
 public class ConsultaMarcada {
 
-	private int id, idAgendaMedico;
+	private int id;
 	private Usuario usuario;
+	private AgendaMedico agendaMedico;
 	private String dataMarcacaoConsulta, dataCancelamento;
 	private Situacao situacao;
 
 	public ConsultaMarcada() {
-		
+
 	}
 
 	public ConsultaMarcada(int id, int idAgenda, Usuario user, String dataMarcacao, String dataCancelamento,
@@ -28,20 +29,20 @@ public class ConsultaMarcada {
 		this.id = id;
 	}
 
-	public int getIdAgendaMedico() {
-		return idAgendaMedico;
-	}
-
-	public void setIdAgendaMedico(int idAgendaMedico) {
-		this.idAgendaMedico = idAgendaMedico;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public AgendaMedico getAgendaMedico() {
+		return agendaMedico;
+	}
+
+	public void setAgendaMedico(AgendaMedico agendaMedico) {
+		this.agendaMedico = agendaMedico;
 	}
 
 	public String getDataMarcacaoConsulta() {
@@ -67,4 +68,5 @@ public class ConsultaMarcada {
 	public void setSituacao(Situacao situacao) {
 		this.situacao = situacao;
 	}
+
 }

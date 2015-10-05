@@ -37,30 +37,10 @@ public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
-	public ArrayList<String> listarLugarEndereco() {
-		ArrayList<String> lista = new ArrayList<String>();
-
-		String sql = "Select endereco from " + TABELA + " order by endereco";
-
-		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
-
-		try {
-			while (cursor.moveToNext()) {
-				lista.add(cursor.getString(0));
-			}
-		} catch (Exception e) {
-			Log.e("", e.getMessage());
-		} finally {
-			cursor.close();
-		}
-
-		return lista;
-	}
-
-	public ArrayList<LocalAtendimento> listarLugar() {
+	public ArrayList<LocalAtendimento> listar() {
 		ArrayList<LocalAtendimento> lista = new ArrayList<LocalAtendimento>();
 
-		String sql = "Select * from " + TABELA + " order by endereco";
+		String sql = "Select * from " + TABELA + " order by _id";
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
@@ -72,13 +52,14 @@ public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 				lugar.setEndereco(cursor.getString(2));
 				lista.add(lugar);
 			}
+			return lista;
 		} catch (Exception e) {
 			Log.e("", e.getMessage());
+			return null;
 		} finally {
 			cursor.close();
 		}
 
-		return lista;
 	}
 
 }

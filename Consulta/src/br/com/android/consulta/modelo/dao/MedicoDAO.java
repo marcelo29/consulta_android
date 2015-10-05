@@ -51,7 +51,7 @@ public class MedicoDAO extends SQLiteOpenHelper {
 		if (id != 0) {
 			sql = sql + " where id_especialidade = " + id;
 		}
-		sql = sql + " order by nome";
+		sql = sql + " order by _id";
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 

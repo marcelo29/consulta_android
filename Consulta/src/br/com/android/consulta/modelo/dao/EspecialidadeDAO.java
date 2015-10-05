@@ -42,7 +42,7 @@ public class EspecialidadeDAO extends SQLiteOpenHelper {
 	public ArrayList<Especialidade> listar() {
 		ArrayList<Especialidade> lista = new ArrayList<Especialidade>();
 
-		String sql = "select * from " + TABELA + " order by nome";
+		String sql = "select * from " + TABELA + " order by _id";
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 

@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import br.com.android.consulta.helper.adapter.ConsultasAdapter;
+import br.com.android.consulta.helper.adapter.ConsultasMarcadasAdapter;
+import br.com.android.consulta.helper.adapter.MarcarConsultaAdapter;
 import br.com.android.consulta.modelo.bean.AgendaMedico;
+import br.com.android.consulta.modelo.bean.ConsultaMarcada;
 import br.com.android.consulta.modelo.bean.Usuario;
 import br.com.android.consulta.modelo.dao.ConsultaMarcadaDAO;
 import br.com.android.consulta.modelo.dao.SessaoDAO;
@@ -42,14 +44,14 @@ public class ConsultasMarcadas extends Activity {
 		usuario = new SessaoDAO(this).getUsuario();
 
 		// dps vai ser pela consultasMarcadasDAO
-		ArrayList<AgendaMedico> lista = new ConsultaMarcadaDAO(ConsultasMarcadas.this)
+		ArrayList<ConsultaMarcada> lista = new ConsultaMarcadaDAO(ConsultasMarcadas.this)
 				.retornaConsultasMarcadas(usuario.getId());
 
 		// Log.i(this.toString(), listaConsultasMarcadas.get(0).toString());
 
 		ListView lvConsultasMarcadas = (ListView) findViewById(R.id.lvConsultasMarcadas);
 		lvConsultasMarcadas
-				.setAdapter(new ConsultasAdapter(this, lista, usuario, R.layout.activity_consultas_marcadas));
+				.setAdapter(new ConsultasMarcadasAdapter(this, lista, usuario, R.layout.activity_consultas_marcadas));
 	}
 
 }

@@ -30,14 +30,35 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 	}
 
 	// seleciona a agenda passando o idmedico, idespecialidade, idlocal,
-	// idsituacao
-	public ArrayList<AgendaMedico> retornaAgendaMedico(int idEspecialidade, int idMedico, int idLocal, int idSituacao) {
+	// data
+	public ArrayList<AgendaMedico> retornaAgendaMedico(int idEspecialidade, int idMedico, int idLocal,
+			String stringData) {
 		ArrayList<AgendaMedico> lista = new ArrayList<AgendaMedico>();
 
 		String sql = "select m.nome, e.nome, l.endereco, a.data "
-				+ "from medico m, especialidade e, local_atendimento l, situacao s, agenda_medico a where "
-				+ "a.id_medico = " + idMedico + " and a.id_especialidade = " + idEspecialidade + " and a.id_local = "
-				+ idLocal + " and a.id_situacao = " + idSituacao;
+				+ "from medico m, especialidade e, local_atendimento l, agenda_medico a where a.situacao = 'D'";
+
+		if (idEspecialidade != 0) {
+			sql = sql + " and m.id_especialidade = e._id and e._id = " + idEspecialidade;
+		} else {
+			sql = sql + " and m.id_especialidade = e._id";
+		}
+
+		if (idMedico != 0) {
+			sql = sql + " and a.id_medico = m._id and m._id = " + idMedico;
+		} else {
+			sql = sql + " and a.id_medico = m._id";
+		}
+
+		if (idLocal != 0) {
+			sql = sql + " and a.id_local = l._id and l._id = " + idLocal;
+		} else {
+			sql = sql + " and a.id_local = l._id";
+		}
+
+		if (!stringData.isEmpty()) {
+			sql = sql + " and a.data = '" + stringData + "'";
+		}
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
@@ -76,17 +97,17 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 
 	}
 
-	// seleciona agenda segundo a situacao
-	public ArrayList<AgendaMedico> retornaAgendaMedico(int idSituacao) {
+	// seleciona agendas disponiveis
+	public ArrayList<AgendaMedico> retornaAgendaMedico() {
 		ArrayList<AgendaMedico> lista = new ArrayList<AgendaMedico>();
 
 		String sql = "select m.nome, e.nome, l.endereco, a.data "
-				+ "from medico m, especialidade e, local_atendimento l, situacao s, agenda_medico a "
-				+ "where m.id_especialidade = e._id and m._id = a.id_medico and l._id = a.id_local and s._id = a.id_situacao ";
+				+ "from medico m, especialidade e, local_atendimento l, agenda_medico a "
+				+ "where m.id_especialidade = e._id and m._id = a.id_medico and l._id = a.id_local and a.situacao = 'D'";
 
-		if (idSituacao != 0) {
-			sql = sql + "and s._id = " + idSituacao;
-		}
+		/*
+		 * if (idSituacao != 0) { sql = sql + "and s._id = " + idSituacao; }
+		 */
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 

@@ -2,6 +2,7 @@ package br.com.android.consulta.modelo.dao;
 
 import java.io.File;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +11,16 @@ import android.util.Log;
 
 // encapsula toda a criacao do banco
 public class DBDAO extends SQLiteOpenHelper {
+
 	// nome do banco
 	public static final String DATABASE = "db_consulta";
 	// versao
-	public static final int VERSAO = 3;
+	public static final int VERSAO = 1;
 	// tabelas do banco
-	private static final String tbUsuario = "usuario", tbLocal = "local_atendimento", tbEspecialidade = "especialidade",
+	// para exibicao no log cat
+	private static final String TAG = "appConsulta";
+
+	private static String tbUsuario = "usuario", tbLocal = "local_atendimento", tbEspecialidade = "especialidade",
 			tbMedico = "medico", tbSituacao = "situacao", tbAgendaMedico = "agenda_medico",
 			tbConsultaMarcada = "consulta_marcada";
 
@@ -27,83 +32,167 @@ public class DBDAO extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// string p criar a tabela no banco de dados
-		db.execSQL("create table if not exists " + tbUsuario + "(_id integer primary key autoincrement, "
-				+ "login text, senha text, perfil text, email text)");
-		Log.i(DATABASE, tbUsuario);
-
-		db.execSQL("insert into " + tbUsuario + " values(null, 'adm', '123', 'A-Adm', 'adm@adm')");
-		db.execSQL("insert into " + tbUsuario + " values(null, 'user', '123', 'U-User', 'user@user')");
-
-		String ddl = "create table if not exists " + tbLocal
-				+ "(_id integer primary key autoincrement, nome text, endereco text)";
+		String ddl = "create table if not exists " + tbUsuario + "(_id integer primary key autoincrement, "
+				+ "login text, senha text, perfil text, email text)";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbLocal);
-
-		db.execSQL("insert into " + tbLocal + " values(null, 'Fortaleza', 'Rua Rio Grande Do Norte 1270')");
-		db.execSQL("insert into " + tbLocal + " values(null, 'Another', 'Rua Amazonas 612')");
+		Log.i(TAG, tbUsuario);
 
 		ddl = "create table if not exists " + tbEspecialidade + "(_id integer primary key autoincrement, nome text)";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbEspecialidade);
-
-		db.execSQL("insert into " + tbEspecialidade + " values(null, 'cardiologia')");
-		db.execSQL("insert into " + tbEspecialidade + " values(null, 'traumatologia')");
-		db.execSQL("insert into " + tbEspecialidade + " values(null, 'neurologia')");
-		db.execSQL("insert into " + tbEspecialidade + " values(null, 'geral')");
+		Log.i(TAG, tbEspecialidade);
 
 		ddl = "create table if not exists " + tbMedico
-				+ "(_id integer primary key autoincrement, crm integer, nome text, id_especialidade integer, "
+				+ "(_id integer primary key autoincrement, crm text, nome text, id_especialidade integer, "
 				+ "foreign key(id_especialidade) references especialidade(_id))";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbMedico);
+		Log.i(TAG, tbMedico);
 
-		db.execSQL("insert into " + tbMedico + " values(null, 1, 'House', 1)"); // cardiologia
-		db.execSQL("insert into " + tbMedico + " values(null, 2, 'Marcelo', 2)"); // traumatologia
-		db.execSQL("insert into " + tbMedico + " values(null, 3, 'Sum', 3)"); // neurologia
-		db.execSQL("insert into " + tbMedico + " values(null, 4, 'Aira', 4)"); // geral
-
-		ddl = "create table if not exists " + tbSituacao
-				+ "(_id integer primary key autoincrement, nome text, descricao text)";
+		ddl = "create table if not exists " + tbLocal
+				+ "(_id integer primary key autoincrement, nome text, endereco text)";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbSituacao);
-
-		db.execSQL("insert into " + tbSituacao + " values(null, 'd', 'disponivel')");
-		db.execSQL("insert into " + tbSituacao + " values(null, 'm', 'marcada')");
-		db.execSQL("insert into " + tbSituacao + " values(null, 'c', 'cancelada')");
+		Log.i(TAG, tbLocal);
 
 		ddl = "create table if not exists " + tbAgendaMedico
-				+ "(_id integer primary key autoincrement, id_medico integer, id_situacao integer, id_local integer, "
+				+ "(_id integer primary key autoincrement, id_medico integer, situacao text, id_local integer, "
 				+ "data text, hora text, foreign key(id_medico) references medico(_id), "
-				+ "foreign key(id_situacao) references situacao(_id), foreign key(id_local) references local_atendimento(_id))";
+				+ "foreign key(id_local) references local_atendimento(_id))";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbAgendaMedico);
-
-		// marcadas
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 1, 2, 1, '29-09-2015', null)");
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 2, 2, 2, '30-09-2015', null)");
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 3, 2, 2, '01-11-2015', null)");
-		
-		// disponivel
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 3, 1, 2, '01-10-2015', null)");
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 3, 1, 1, '09-08-2015', null)");
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 4, 1, 2, '03-10-2015', null)");
-		db.execSQL("insert into " + tbAgendaMedico + " values(null, 4, 1, 1, '25-09-2015', null)");
+		Log.i(TAG, tbAgendaMedico);
 
 		ddl = "create table if not exists " + tbConsultaMarcada
-				+ "(_id integer primary key autoincrement, id_usuario integer, id_agenda_medico integer, "
+				+ "(_id integer primary key autoincrement, id_usuario integer, id_agenda_medico integer, situacao text,"
 				+ "data_consulta text, data_cancelamento text, foreign key(id_usuario) references usuario(_id), "
 				+ "foreign key(id_agenda_medico) references agenda_medico(_id))";
 		db.execSQL(ddl);
-		Log.i(DATABASE, tbConsultaMarcada);
+		Log.i(TAG, tbConsultaMarcada);
 
-		db.execSQL("insert into " + tbConsultaMarcada + " values(null, 1, 1, null, null)"); // adm
-		db.execSQL("insert into " + tbConsultaMarcada + " values(null, 2, 2, null, null)"); // user
-		db.execSQL("insert into " + tbConsultaMarcada + " values(null, 1, 3, null, null)"); // adm
+		Log.i(TAG, "*********** Create rolou");
+		insereUsuario(db, "adm", "123", "A-Adm", "admin@hotmail.com");
+		insereUsuario(db, "user", "123", "U-User", "user@gmail.com");
+
+		insereEspecialidade(db, "Clinica Medica");
+		insereEspecialidade(db, "Neurologista");
+		insereEspecialidade(db, "Oftalmologista");
+		insereEspecialidade(db, "Cardiologista");
+
+		insereMedico(db, "Manoel Assis", "98654", 1);
+		insereMedico(db, "Sabrina Martins", "982354", 2);
+		insereMedico(db, "Pedro Paulo", "122354", 3);
+		insereMedico(db, "Francisco Almeida", "562345", 1);
+		insereMedico(db, "Francisca Silva", "562388", 2);
+		insereMedico(db, "Mendes Silva", "555388", 3);
+		insereMedico(db, "Cruz Vieira", "51267", 4);
+		insereMedico(db, "Samuel Davi", "4551267", 1);
+		insereMedico(db, "Cristina Lima", "4983221", 2);
+
+		insereLocalAtendimento(db, "Clinica 24 horas", "Av Rui Barbosa, 110, Aldeota, Fortaleza, Ce");
+		insereLocalAtendimento(db, "Posto de Saude Almeida", "Rua 1, 110, Jose Walter, Fortaleza, Ce");
+		insereLocalAtendimento(db, "Hospital Santana",
+				"Av Desembargador Gonzaga 560, Cidades dos Funcionarios, Fortaleza, Ce");
+
+		// idMedico 	idLocal 	situacao	data
+		insereAgendaMedico(db, 1, 2, "D", "03/10/2015");//1
+		insereAgendaMedico(db, 2, 1, "M", "18/10/2015");//2
+		insereAgendaMedico(db, 2, 2, "D", "19/10/2015");//3
+		insereAgendaMedico(db, 2, 3, "M", "20/10/2015");//4
+		insereAgendaMedico(db, 3, 1, "M", "21/10/2015");//5
+		insereAgendaMedico(db, 3, 3, "D", "23/10/2015");//6
+		insereAgendaMedico(db, 4, 1, "D", "24/10/2015");//7
+		insereAgendaMedico(db, 4, 2, "D", "25/10/2015");//8
+		insereAgendaMedico(db, 4, 3, "D", "26/10/2015");//9
+		insereAgendaMedico(db, 5, 1, "M", "27/10/2015");//10
+		insereAgendaMedico(db, 5, 2, "D", "28/10/2015");//11
+		insereAgendaMedico(db, 5, 3, "D", "29/10/2015");//12
+		insereAgendaMedico(db, 6, 1, "M", "30/10/2015");//13
+		insereAgendaMedico(db, 6, 2, "D", "01/09/2015");//14
+		insereAgendaMedico(db, 6, 3, "D", "02/09/2015");//15
+		insereAgendaMedico(db, 7, 1, "D", "03/09/2015");//16
+		insereAgendaMedico(db, 7, 2, "M", "04/09/2015");//17
+		insereAgendaMedico(db, 7, 3, "D", "05/09/2015");//18
+		insereAgendaMedico(db, 8, 1, "D", "06/09/2015");//19
+		insereAgendaMedico(db, 8, 2, "M", "07/09/2015");//20
+		insereAgendaMedico(db, 9, 2, "D", "10/09/2015");//21
+		insereAgendaMedico(db, 9, 3, "M", "11/09/2015");//22
+
+		// idUsuario	idAgendaMedico	situacao	data
+		insereConsultaMarcada(db, 1, 1, "M", "12/09/2015");
+		insereConsultaMarcada(db, 1, 2, "M", "18/10/2015");//2
+		insereConsultaMarcada(db, 2, 4, "M", "20/10/2015");//4
+		insereConsultaMarcada(db, 1, 5, "M", "21/10/2015");//5
+		insereConsultaMarcada(db, 1, 10, "M", "27/10/2015");//10
+		insereConsultaMarcada(db, 2, 13, "M", "30/10/2015");//13
+		insereConsultaMarcada(db, 1, 17, "M", "04/09/2015");//17
+		insereConsultaMarcada(db, 1, 20, "M", "07/09/2015");//20
+		insereConsultaMarcada(db, 2, 22, "M", "11/09/2015");//22
+		
+	}
+
+	private void insereUsuario(SQLiteDatabase db, String login, String senha, String perfil, String email) {
+		ContentValues values = new ContentValues();
+
+		values.put("login", login);
+		values.put("senha", senha);
+		values.put("perfil", perfil);
+		values.put("email", email);
+
+		db.insert(tbUsuario, null, values);
+	}
+
+	private void insereLocalAtendimento(SQLiteDatabase db, String nome, String endereco) {
+		ContentValues values = new ContentValues();
+
+		values.put("nome", nome);
+		values.put("endereco", endereco);
+
+		db.insert(tbLocal, null, values);
+	}
+
+	private void insereEspecialidade(SQLiteDatabase db, String nome) {
+		ContentValues values = new ContentValues();
+
+		values.put("nome", nome);
+
+		db.insert(tbEspecialidade, null, values);
+	}
+
+	private void insereMedico(SQLiteDatabase db, String nome, String crm, int idEspecialidade) {
+		ContentValues values = new ContentValues();
+
+		values.put("crm", crm);
+		values.put("nome", nome);
+		values.put("id_especialidade", idEspecialidade);
+
+		db.insert(tbMedico, null, values);
+	}
+
+	private void insereAgendaMedico(SQLiteDatabase db, int idMedico, int idLocal, String situacao, String data) {
+		ContentValues values = new ContentValues();
+
+		values.put("id_medico", idMedico);
+		values.put("id_local", idLocal);
+		values.put("situacao", situacao);
+		values.put("data", data);
+
+		db.insert(tbAgendaMedico, null, values);
+	}
+
+	private void insereConsultaMarcada(SQLiteDatabase db, int idUsuario, int idAgendaMedico, String situacao,
+			String dataConsulta) {
+		ContentValues values = new ContentValues();
+
+		values.put("id_usuario", idUsuario);
+		values.put("id_agenda_medico", idAgendaMedico);
+		values.put("situacao", situacao);
+		values.put("data_consulta", dataConsulta);
+
+		db.insert(tbConsultaMarcada, null, values);
 	}
 
 	// atualiza o banco caso mude de versao
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		drop(db);
 
+		onCreate(db);
 	}
 
 	// verifica se a base ja existe
@@ -112,7 +201,10 @@ public class DBDAO extends SQLiteOpenHelper {
 		return dbFile.exists();
 	}
 
+	// deleta o banco
 	public void drop(SQLiteDatabase db) {
+		Log.i(TAG, "*********** Drop rolou");
+
 		db.execSQL("drop table if exists " + tbLocal);
 		db.execSQL("drop table if exists " + tbConsultaMarcada);
 		db.execSQL("drop table if exists " + tbAgendaMedico);

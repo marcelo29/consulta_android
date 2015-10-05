@@ -13,13 +13,13 @@ import br.com.android.consulta.R;
 import br.com.android.consulta.modelo.bean.AgendaMedico;
 import br.com.android.consulta.modelo.bean.Usuario;
 
-public class ConsultasAdapter extends BaseAdapter {
+public class MarcarConsultaAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<AgendaMedico> lista;
 	private Usuario usuario;
 	private int idLayout;
 
-	public ConsultasAdapter(Context context, ArrayList<AgendaMedico> lista, Usuario usuario, int idLayout) {
+	public MarcarConsultaAdapter(Context context, ArrayList<AgendaMedico> lista, Usuario usuario, int idLayout) {
 		this.context = context;
 		this.lista = lista;
 		this.usuario = usuario;
@@ -76,11 +76,6 @@ public class ConsultasAdapter extends BaseAdapter {
 		if (idLayout == R.layout.activity_consultas_marcadas) {
 			TextView txtUsuario = (TextView) layout.findViewById(R.id.txtUsuario);
 			txtUsuario.setText(usuario.getLogin());
-		}
-
-		// se o perfil for adm desabilidata o checkbox
-		if (usuario.getPerfil().equals("A-Adm")) {
-			chkConsulta.setEnabled(false);
 		}
 
 		return layout;
