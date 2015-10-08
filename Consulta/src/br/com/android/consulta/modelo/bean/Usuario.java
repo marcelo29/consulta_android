@@ -4,7 +4,7 @@ public class Usuario {
 
 	// atributos do usuario
 	private int id;
-	private String login, senha, perfil, email;
+	private String login, senha, email, perfil;
 
 	public Usuario() {
 

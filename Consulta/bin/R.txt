@@ -415,6 +415,7 @@ int menu login 0x7f0c0001
 int menu main 0x7f0c0002
 int menu mapas 0x7f0c0003
 int menu marcar__consulta 0x7f0c0004
+int menu teste 0x7f0c0005
 int string abc_action_bar_home_description 0x7f06001a
 int string abc_action_bar_up_description 0x7f06001b
 int string abc_action_menu_overflow_description 0x7f06001c
@@ -436,7 +437,9 @@ int string auth_client_needs_update_title 0x7f060016
 int string auth_client_play_services_err_notification_msg 0x7f060017
 int string auth_client_requested_by_msg 0x7f060018
 int string auth_client_using_bad_version_title 0x7f060013
-int string cliente 0x7f060038
+int string aviso_lista_vazia 0x7f060033
+int string aviso_nenhuma_consulta_marcada 0x7f060034
+int string cliente 0x7f06003a
 int string common_google_play_services_enable_button 0x7f060006
 int string common_google_play_services_enable_text 0x7f060005
 int string common_google_play_services_enable_title 0x7f060004
@@ -456,25 +459,26 @@ int string common_google_play_services_update_text 0x7f060008
 int string common_google_play_services_update_title 0x7f060007
 int string common_signin_button_text 0x7f060011
 int string common_signin_button_text_long 0x7f060012
-int string data 0x7f060036
-int string desmarcarConsulta 0x7f06003c
-int string endereco 0x7f06003a
-int string especialidade 0x7f060034
+int string data 0x7f060038
+int string desmarcarConsulta 0x7f06003e
+int string endereco 0x7f06003c
+int string especialidade 0x7f060036
 int string hello_world 0x7f060027
-int string local 0x7f060035
-int string marcarConsulta 0x7f06003b
-int string medico 0x7f060033
-int string mostrarMapa 0x7f060039
+int string local 0x7f060037
+int string marcarConsulta 0x7f06003d
+int string medico 0x7f060035
+int string mostrarMapa 0x7f06003b
 int string msg_aplica_filtro 0x7f060031
 int string msg_confirma 0x7f060032
 int string msg_erro_invalido_login 0x7f06002f
 int string msg_erro_validacao_login 0x7f060030
-int string nome 0x7f060037
+int string nome 0x7f060039
 int string senha 0x7f06002e
 int string title_activity_consultas_marcadas 0x7f06002b
 int string title_activity_login 0x7f060029
 int string title_activity_mapas 0x7f06002c
 int string title_activity_marcar_consulta 0x7f06002a
+int string title_activity_teste 0x7f06003f
 int string usuario 0x7f06002d
 int style AppBaseTheme 0x7f0b008b
 int style AppTheme 0x7f0b008c
@@ -705,7 +709,7 @@ int styleable MenuItem_android_title 7
 int styleable MenuItem_android_titleCondensed 8
 int styleable MenuItem_android_visible 4
 int styleable MenuItem_showAsAction 13
-int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x010103f8 }
+int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x01010435 }
 int styleable MenuView_android_headerBackground 4
 int styleable MenuView_android_horizontalDivider 2
 int styleable MenuView_android_itemBackground 5

@@ -1,7 +1,7 @@
 package br.com.android.consulta.modelo.dao;
 
 import java.util.ArrayList;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,16 +27,7 @@ public class LocalAtendimentoDAO extends SQLiteOpenHelper {
 
 	}
 
-	public void cadastrar(LocalAtendimento local) {
-		ContentValues values = new ContentValues();
-
-		values.put("nome", local.getNome());
-		values.put("endereco", local.getEndereco());
-
-		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
-	}
-
+	// lista os lugares ordenando pelo id
 	public ArrayList<LocalAtendimento> listar() {
 		ArrayList<LocalAtendimento> lista = new ArrayList<LocalAtendimento>();
 

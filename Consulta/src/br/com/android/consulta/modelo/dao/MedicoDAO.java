@@ -1,7 +1,7 @@
 package br.com.android.consulta.modelo.dao;
 
 import java.util.ArrayList;
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,17 +29,6 @@ public class MedicoDAO extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-	}
-
-	public void cadastrar(Medico medico) {
-		ContentValues values = new ContentValues();
-
-		values.put("crm", medico.getCmd());
-		values.put("nome", medico.getNome());
-		values.put("id_especialidade", medico.getEspecialidade().getId());
-
-		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
 	// lista os medicos

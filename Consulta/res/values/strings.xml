@@ -17,6 +17,8 @@
     <string name="msg_erro_validacao_login">Preencha os campos vazios!!!</string>
     <string name="msg_aplica_filtro">Aplicar Filtro</string>
     <string name="msg_confirma">Confirmar</string>
+    <string name="aviso_lista_vazia">Aplique o filtro antes de confirmar !!</string>
+    <string name="aviso_nenhuma_consulta_marcada">Nenhuma consulta foi marcada !!</string>
     <string name="medico">Médico</string>
     <string name="especialidade">Especialidade</string>
     <string name="local">Local</string>
@@ -29,5 +31,6 @@
     <string name="endereco">Endereço</string>
     <string name="marcarConsulta">Marcar Consultas</string>
     <string name="desmarcarConsulta">Desmarcar</string>
+    <string name="title_activity_teste">TesteActivity</string>
 
 </resources>

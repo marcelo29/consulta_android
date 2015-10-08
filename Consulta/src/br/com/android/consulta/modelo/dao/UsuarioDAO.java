@@ -1,6 +1,5 @@
 package br.com.android.consulta.modelo.dao;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,21 +13,13 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 	// tabela
 	private static final String TABELA = "usuario";
 
-	// construtor recebendo o contexto
 	public UsuarioDAO(Context context) {
-		// recebe o contexto, o banco e a versao
 		super(context, DBDAO.DATABASE, null, DBDAO.VERSAO);
 	}
 
 	@Override // cria o banco
 	public void onCreate(SQLiteDatabase db) {
-		/*
-		 * string p criar a tabela no banco de dados String ddl =
-		 * "create table " + TABELA + "(_id integer primary key autoincrement,"
-		 * + "login text, senha text, perfil text, email text)";
-		 * 
-		 * // cria a tabela no banco db.execSQL(ddl);
-		 */
+
 	}
 
 	// atualiza o banco
@@ -40,19 +31,6 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 		db.execSQL(ddl);
 
 		onCreate(db);
-	}
-
-	// cadastra usuario
-	public void cadastrar(Usuario usuario) {
-		ContentValues values = new ContentValues();
-
-		values.put("login", usuario.getLogin());
-		values.put("senha", usuario.getSenha());
-		values.put("perfil", usuario.getPerfil());
-		values.put("email", usuario.getEmail());
-
-		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
 	}
 
 	// verifica se o bate usuario e senha
@@ -85,8 +63,10 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 			Usuario user = new Usuario();
 			user.setId(cursor.getInt(0));
 			user.setLogin(cursor.getString(1));
-			user.setEmail(cursor.getString(2));
+			user.setSenha(cursor.getString(2));
 			user.setPerfil(cursor.getString(3));
+			user.setEmail(cursor.getString(4));
+
 			return user;
 		} catch (Exception e) {
 			Log.e(TABELA, e.getMessage());

@@ -2,6 +2,8 @@ package br.com.android.consulta.modelo.bean;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
+
 public class AgendaMedico {
 
 	private int id;
@@ -10,9 +12,10 @@ public class AgendaMedico {
 	private LocalAtendimento localAtendimento;
 	private Situacao situacao;
 	private ArrayList<ConsultaMarcada> listaConsultaMarcada;
+	private Boolean checkbox;
 
 	public AgendaMedico() {
-
+		this.checkbox = false;
 	}
 
 	public AgendaMedico(int id, Medico medico, String data, String hora, LocalAtendimento localAtendimento,
@@ -80,5 +83,18 @@ public class AgendaMedico {
 
 	public void setConsultaMarcada(ArrayList<ConsultaMarcada> listaConsultaMarcada) {
 		this.listaConsultaMarcada = listaConsultaMarcada;
+	}
+
+	public Boolean getCheckbox() {
+		return checkbox;
+	}
+
+	public void setCheckbox(Boolean checkbox) {
+		this.checkbox = checkbox;
+	}
+
+	public String corpoTexto(String situacao) {
+		return "Consulta "+situacao+" com: " + medico.getNome() + " no dia: " + data + " na Clinica: "
+				+ localAtendimento.getNome() + " endereco: " + localAtendimento.getEndereco();
 	}
 }

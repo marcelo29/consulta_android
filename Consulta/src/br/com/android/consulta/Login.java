@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import br.com.android.consulta.modelo.bean.Usuario;
 import br.com.android.consulta.modelo.dao.DBDAO;
-import br.com.android.consulta.modelo.dao.LocalAtendimentoDAO;
 import br.com.android.consulta.modelo.dao.SessaoDAO;
 import br.com.android.consulta.modelo.dao.UsuarioDAO;
 
@@ -39,10 +37,11 @@ public class Login extends Activity {
 			db.onCreate(escrita);
 		}
 
-/*		for(int i = 0; i < 2; i++) {
-			Log.i("", new LocalAtendimentoDAO(this).listar().get(i).getEndereco());
-		}*/
-		
+		/*
+		 * for(int i = 0; i < 2; i++) { Log.i("", new
+		 * LocalAtendimentoDAO(this).listar().get(i).getEndereco()); }
+		 */
+
 		// relaciona xml com codigo java
 		edtUsuario = (EditText) findViewById(R.id.edtUsuario);
 		edtSenha = (EditText) findViewById(R.id.edtSenha);
@@ -84,6 +83,7 @@ public class Login extends Activity {
 							// carrega novo layotu
 							Intent intent = new Intent(Login.this, ConsultasMarcadas.class);
 							startActivity(intent);
+							limpaCampos();
 						} else {
 							// avisa q usuario e senha estao errados
 							dialogo.setMessage(R.string.msg_erro_invalido_login);
@@ -102,9 +102,15 @@ public class Login extends Activity {
 					dao.close();
 				}
 			}
+
 		});
 	}
 
+	// limpa os campos ao logar
+	private void limpaCampos() {
+		edtUsuario.setText("");
+		edtSenha.setText("");
+	}
 	// validas os campos
 	private boolean validacao(String usuario, String senha) {
 		boolean validacao = true;

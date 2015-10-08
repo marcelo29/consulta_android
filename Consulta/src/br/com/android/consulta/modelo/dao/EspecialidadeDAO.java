@@ -29,6 +29,7 @@ public class EspecialidadeDAO extends SQLiteOpenHelper {
 
 	}
 
+	// cadastra especialidade
 	public void cadastrar(Especialidade especialidade) {
 		ContentValues values = new ContentValues();
 

@@ -2,7 +2,7 @@ package br.com.android.consulta.modelo.bean;
 
 public enum Situacao {
 
-	Disponivel("D-Disponivel"), Marcada("M-Marcada"), Cancelada("C-Cancelada");
+	Disponivel("D"), Marcada("M"), Cancelada("C");
 	
 	public String situacao;
 	
