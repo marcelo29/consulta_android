@@ -2,8 +2,6 @@ package br.com.android.consulta.modelo.bean;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
-
 public class AgendaMedico {
 
 	private int id;

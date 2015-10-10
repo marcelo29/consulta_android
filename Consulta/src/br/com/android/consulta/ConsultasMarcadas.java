@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +27,6 @@ public class ConsultasMarcadas extends Activity {
 	private Button btnMarcarConsulta, btnDesmarcarConsulta;
 	private ListView lvConsultasMarcadas;
 	private ArrayList<ConsultaMarcada> lista, listaDesmarcar;
-	// private Boolean validaLista = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +55,14 @@ public class ConsultasMarcadas extends Activity {
 								new DBDAO(ConsultasMarcadas.this).getWritableDatabase(),
 								listaDesmarcar.get(i).getAgendaMedico().getId(), usuario.getId());
 
+						// envia email avisando q foi desmarcada
 						Intent intent = new Intent(Intent.ACTION_SEND);
 						intent.setType("message/rfc822");
 						intent.putExtra(Intent.EXTRA_EMAIL, new String[] { usuario.getEmail() });
 						intent.putExtra(Intent.EXTRA_SUBJECT, "Consulta desmarcada com sucesso");
-						intent.putExtra(Intent.EXTRA_TEXT, listaDesmarcar.get(i).getAgendaMedico().corpoTexto("desmarcada"));
+						intent.putExtra(Intent.EXTRA_TEXT,
+								listaDesmarcar.get(i).getAgendaMedico().corpoTexto("desmarcada"));
 						startActivity(intent);
-
 					}
 				} else {
 					dialogo.setMessage(R.string.aviso_nenhuma_consulta_marcada);
@@ -106,6 +109,43 @@ public class ConsultasMarcadas extends Activity {
 
 		lvConsultasMarcadas = (ListView) findViewById(R.id.lvConsultasMarcadas);
 		lvConsultasMarcadas.setAdapter(new ConsultasMarcadasAdapter(this, lista, usuario, listaDesmarcar));
+	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = this.getMenuInflater();
+
+		inflater.inflate(R.menu.consultas_marcadas, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_mapa:
+
+			AlertDialog.Builder dialogo = new AlertDialog.Builder(ConsultasMarcadas.this);
+			dialogo.setNeutralButton("Ok", null);
+			// ver se a lista esta vazia
+			if (listaDesmarcar.size() != 0) {
+				if (listaDesmarcar.size() == 1) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("geo:0,0?z=14&q="
+							+ listaDesmarcar.get(0).getAgendaMedico().getLocalAtendimento().getEndereco()));
+					startActivity(intent);
+				} else {
+					dialogo.setMessage("Marque apenas um endereco para visualizar no mapa!!.");
+					dialogo.show();
+				}
+			} else {
+				dialogo.setMessage(R.string.aviso_nenhuma_consulta_marcada);
+				dialogo.show();
+			}
+
+			return false;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

@@ -25,12 +25,10 @@
     <string name="data">Data</string>
     <string name="nome">Nome</string>
     <string name="cliente">Cliente</string>
-
-    <!-- menu -->
+    <string name="mapa">Mapa</string>
     <string name="mostrarMapa">Mostrar no Mapa</string>
     <string name="endereco">Endereço</string>
     <string name="marcarConsulta">Marcar Consultas</string>
     <string name="desmarcarConsulta">Desmarcar</string>
-    <string name="title_activity_teste">TesteActivity</string>
 
 </resources>

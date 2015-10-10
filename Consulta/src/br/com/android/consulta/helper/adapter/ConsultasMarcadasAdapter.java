@@ -2,8 +2,6 @@ package br.com.android.consulta.helper.adapter;
 
 import java.util.ArrayList;
 
-import com.google.android.gms.internal.cn;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView;
 import br.com.android.consulta.R;
 import br.com.android.consulta.modelo.bean.ConsultaMarcada;
 import br.com.android.consulta.modelo.bean.Situacao;
@@ -62,7 +60,7 @@ public class ConsultasMarcadasAdapter extends BaseAdapter {
 		}
 
 		// relaciona xml com codigo java
-		CheckBox chkConsulta = (CheckBox) layout.findViewById(R.id.chkConsulta);
+		final CheckBox chkConsulta = (CheckBox) layout.findViewById(R.id.chkConsulta);
 
 		TextView txtMedico = (TextView) layout.findViewById(R.id.txtMedico);
 		txtMedico.setText(consultaMarcada.getAgendaMedico().getMedico().getNome());
@@ -80,10 +78,12 @@ public class ConsultasMarcadasAdapter extends BaseAdapter {
 		TextView txtUsuario = (TextView) layout.findViewById(R.id.txtUsuario);
 		txtUsuario.setText(consultaMarcada.getUsuario().getLogin());
 
-		// se o perfil for adm desabilidata o checkbox
-		if (!usuario.getLogin().equals(consultaMarcada.getUsuario().getLogin())) {
+		// se o usuario da sessao for diferente do q marcou a consulta
+		// desabilita o checkbox
+		if (usuario.getId() != consultaMarcada.getUsuario().getId())
 			chkConsulta.setEnabled(false);
-		}
+		else
+			chkConsulta.setEnabled(true);
 
 		// ao alterar o checkbox ele faz
 		chkConsulta.setOnCheckedChangeListener(new OnCheckedChangeListener() {

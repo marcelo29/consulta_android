@@ -15,14 +15,14 @@ public class DBDAO extends SQLiteOpenHelper {
 	// nome do banco
 	public static final String DATABASE = "db_consulta";
 	// versao
-	public static final int VERSAO = 4;
+	public static final int VERSAO = 5;
 	// para exibicao no log cat
 	private static final String TAG = "appConsulta";
 
 	// tabelas do banco
-	private static String tbUsuario = "usuario", tbLocal = "local_atendimento", tbEspecialidade = "especialidade",
-			tbMedico = "medico", tbSituacao = "situacao", tbAgendaMedico = "agenda_medico",
-			tbConsultaMarcada = "consulta_marcada";
+	private static String tbUsuario = "usuario", tbUsuarioLogado = "usuario_logado", tbLocal = "local_atendimento",
+			tbEspecialidade = "especialidade", tbMedico = "medico", tbSituacao = "situacao",
+			tbAgendaMedico = "agenda_medico", tbConsultaMarcada = "consulta_marcada";
 
 	public DBDAO(Context context) {
 		super(context, DATABASE, null, VERSAO);
@@ -35,6 +35,12 @@ public class DBDAO extends SQLiteOpenHelper {
 		String ddl = "create table if not exists " + tbUsuario + "(_id integer primary key autoincrement, "
 				+ "login text, senha text, perfil text, email text)";
 		db.execSQL(ddl);
+
+		ddl = "create table if not exists " + tbUsuarioLogado + "(_id integer primary key autoincrement, "
+				+ "login text, senha text, perfil text, email text)";
+		db.execSQL(ddl);
+
+		db.execSQL("insert into " + tbUsuarioLogado + " values(null, null, null, null, null)");
 
 		ddl = "create table if not exists " + tbEspecialidade + "(_id integer primary key autoincrement, nome text)";
 		db.execSQL(ddl);
@@ -108,16 +114,18 @@ public class DBDAO extends SQLiteOpenHelper {
 		insereAgendaMedico(db, 9, 2, "D", "10/09/2015");// 21
 		insereAgendaMedico(db, 9, 3, "D", "11/09/2015");// 22
 
-		/* idUsuario idAgendaMedico situacao data
-		insereConsultaMarcada(db, 1, 1, "M", "12/09/2015");
-		insereConsultaMarcada(db, 1, 2, "M", "18/10/2015");// 2
-		insereConsultaMarcada(db, 2, 4, "M", "20/10/2015");// 4
-		insereConsultaMarcada(db, 1, 5, "M", "21/10/2015");// 5
-		insereConsultaMarcada(db, 1, 10, "M", "27/10/2015");// 10
-		insereConsultaMarcada(db, 2, 13, "M", "30/10/2015");// 13
-		insereConsultaMarcada(db, 1, 17, "M", "04/09/2015");// 17
-		insereConsultaMarcada(db, 1, 20, "M", "07/09/2015");// 20
-		insereConsultaMarcada(db, 2, 22, "M", "11/09/2015");// 22*/
+		/*
+		 * idUsuario idAgendaMedico situacao data insereConsultaMarcada(db, 1,
+		 * 1, "M", "12/09/2015"); insereConsultaMarcada(db, 1, 2, "M",
+		 * "18/10/2015");// 2 insereConsultaMarcada(db, 2, 4, "M",
+		 * "20/10/2015");// 4 insereConsultaMarcada(db, 1, 5, "M",
+		 * "21/10/2015");// 5 insereConsultaMarcada(db, 1, 10, "M",
+		 * "27/10/2015");// 10 insereConsultaMarcada(db, 2, 13, "M",
+		 * "30/10/2015");// 13 insereConsultaMarcada(db, 1, 17, "M",
+		 * "04/09/2015");// 17 insereConsultaMarcada(db, 1, 20, "M",
+		 * "07/09/2015");// 20 insereConsultaMarcada(db, 2, 22, "M",
+		 * "11/09/2015");// 22
+		 */
 
 	}
 
@@ -176,6 +184,7 @@ public class DBDAO extends SQLiteOpenHelper {
 	}
 
 	// cadastra consultas marcadas
+	@SuppressWarnings("unused")
 	private void insereConsultaMarcada(SQLiteDatabase db, int idUsuario, int idAgendaMedico, String situacao,
 			String dataConsulta) {
 		ContentValues values = new ContentValues();
@@ -203,13 +212,15 @@ public class DBDAO extends SQLiteOpenHelper {
 
 	// deleta o banco
 	public void drop(SQLiteDatabase db) {
+		db.execSQL("drop table if exists " + tbUsuario);
+		db.execSQL("drop table if exists " + tbUsuarioLogado);
 		db.execSQL("drop table if exists " + tbLocal);
 		db.execSQL("drop table if exists " + tbConsultaMarcada);
 		db.execSQL("drop table if exists " + tbAgendaMedico);
 		db.execSQL("drop table if exists " + tbSituacao);
 		db.execSQL("drop table if exists " + tbMedico);
 		db.execSQL("drop table if exists " + tbEspecialidade);
-		
+
 		Log.i(TAG, "*********** Drop rolou");
 	}
 }

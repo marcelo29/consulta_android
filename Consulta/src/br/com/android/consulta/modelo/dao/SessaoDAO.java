@@ -1,7 +1,9 @@
 package br.com.android.consulta.modelo.dao;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import br.com.android.consulta.modelo.bean.Perfil;
 import br.com.android.consulta.modelo.bean.Usuario;
 
 public class SessaoDAO {
@@ -11,17 +13,17 @@ public class SessaoDAO {
 	private SharedPreferences sharedPreferences;
 
 	public SessaoDAO(Activity activity) {
-		sharedPreferences = activity.getSharedPreferences(PREFERENCE_NAME, activity.MODE_PRIVATE);
+		sharedPreferences = activity.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 	}
 
 	public Usuario getUsuario() {
 
 		Usuario usuario = new Usuario();
 		usuario.setId(sharedPreferences.getInt(ID_LOGADO, 0));
-		usuario.setPerfil(sharedPreferences.getString(PERFIL_USUARIO, ""));
+		usuario.setPerfil(Perfil.valueOf(sharedPreferences.getString(PERFIL_USUARIO, "")));
 		usuario.setLogin(sharedPreferences.getString(USUARIO_LOGADO, ""));
 		usuario.setEmail(sharedPreferences.getString(EMAIL_USUARIO, ""));
-		
+
 		return usuario;
 	}
 
@@ -32,9 +34,9 @@ public class SessaoDAO {
 
 		editor.putInt(ID_LOGADO, user.getId());
 		editor.putString(USUARIO_LOGADO, user.getLogin());
-		editor.putString(PERFIL_USUARIO, user.getPerfil());
+		editor.putString(PERFIL_USUARIO, user.getPerfil().toString());
 		editor.putString(EMAIL_USUARIO, user.getEmail());
-		
+
 		editor.commit();
 
 	}

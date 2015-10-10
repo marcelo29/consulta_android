@@ -34,25 +34,16 @@ public class ConsultaMarcadaDAO extends SQLiteOpenHelper {
 	public ArrayList<ConsultaMarcada> retornaConsultasMarcadas(int idUsuario) {
 		ArrayList<ConsultaMarcada> lista = new ArrayList<ConsultaMarcada>();
 
-		/*
-		 * String sql = "update agenda_medico set situacao = 'M' where _id = " +
-		 * idAgendaMedico; db.execSQL(sql); sql =
-		 * "update consulta_marcada set situacao = 'M', id_usuario = " +
-		 * idUsuario + " where id_agenda_medico = " + idAgendaMedico;
-		 * db.execSQL(sql);
-		 */
-
 		String sql = "select m.nome as medico, e.nome as especialidade, l.endereco as endereco, "
-				+ "a.data as data, a._id , u.login as usuario, l.nome from medico m, especialidade e, local_atendimento l, "
+				+ "a.data as data, a._id , l.nome, u._id, u.login from medico m, especialidade e, local_atendimento l, "
 				+ "agenda_medico a, consulta_marcada c, usuario u "
 				+ "where m.id_especialidade = e._id and m._id = a.id_medico and l._id = a.id_local and a.situacao = 'M' "
-				+ "and c.id_agenda_medico = a._id ";
+				+ "and c.id_agenda_medico = a._id and u._id = c.id_usuario";
 
 		// se o usuario nao for adm
 		if (idUsuario > 1)
-			sql = sql + "and c.id_usuario = " + idUsuario;
-		else
-			sql = sql + " and u._id = c.id_usuario";
+			sql = sql + " and u._id = " + idUsuario;
+
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
 		try {
@@ -68,7 +59,7 @@ public class ConsultaMarcadaDAO extends SQLiteOpenHelper {
 
 				medico.setEspecialidade(especialidade);
 				LocalAtendimento local = new LocalAtendimento();
-				local.setNome(cursor.getString(6));
+				local.setNome(cursor.getString(5));
 				local.setEndereco(cursor.getString(2));
 				// Log.i(DBDAO.DATABASE, local.getEndereco());
 
@@ -80,7 +71,8 @@ public class ConsultaMarcadaDAO extends SQLiteOpenHelper {
 				// Log.i(DBDAO.DATABASE, agendaMedico.getData());
 
 				Usuario usuario = new Usuario();
-				usuario.setLogin(cursor.getString(5));
+				usuario.setId(cursor.getInt(6));
+				usuario.setLogin(cursor.getString(7));
 
 				ConsultaMarcada consultaMarcada = new ConsultaMarcada();
 				consultaMarcada.setAgendaMedico(agendaMedico);

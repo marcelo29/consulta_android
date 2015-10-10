@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import br.com.android.consulta.modelo.bean.Perfil;
 import br.com.android.consulta.modelo.bean.Usuario;
 
 // encapsula o tratamento com o banco de dados
@@ -64,7 +65,7 @@ public class UsuarioDAO extends SQLiteOpenHelper {
 			user.setId(cursor.getInt(0));
 			user.setLogin(cursor.getString(1));
 			user.setSenha(cursor.getString(2));
-			user.setPerfil(cursor.getString(3));
+			user.setPerfil(Perfil.valueOf(cursor.getString(3)));
 			user.setEmail(cursor.getString(4));
 
 			return user;

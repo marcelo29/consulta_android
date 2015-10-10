@@ -59,10 +59,6 @@
             android:name=".Mapas"
             android:label="@string/title_activity_mapas" >
         </activity>
-        <activity
-            android:name=".TesteActivity"
-            android:label="@string/title_activity_teste" >
-        </activity>
     </application>
 
 </manifest>

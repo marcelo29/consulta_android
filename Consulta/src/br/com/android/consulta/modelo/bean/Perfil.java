@@ -1,7 +1,7 @@
 package br.com.android.consulta.modelo.bean;
 
 public enum Perfil {
-	Adm("adm"), User("user");
+	adm("adm"), user("user");
 
 	private final String tipoPerfil;
 
