@@ -1,7 +1,6 @@
 package br.com.android.consulta.modelo.dao;
 
 import java.util.ArrayList;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,16 +28,6 @@ public class EspecialidadeDAO extends SQLiteOpenHelper {
 
 	}
 
-	// cadastra especialidade
-	public void cadastrar(Especialidade especialidade) {
-		ContentValues values = new ContentValues();
-
-		values.put("nome", especialidade.getNome());
-
-		getWritableDatabase().insert(TABELA, null, values);
-		Log.i(DBDAO.DATABASE, "Cadastro " + TABELA);
-	}
-
 	// listar as especialidades
 	public ArrayList<Especialidade> listar() {
 		ArrayList<Especialidade> lista = new ArrayList<Especialidade>();
@@ -64,4 +53,25 @@ public class EspecialidadeDAO extends SQLiteOpenHelper {
 
 	}
 
+	// lista os medicos
+	public Especialidade retornaEspecialidadeMedico(int idMedico) {
+		String sql = "select e._id, e.nome from especialidade e, medico m where m._id = " + idMedico
+				+ " order by e._id";
+
+		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
+
+		try {
+			cursor.moveToFirst();
+			Especialidade especialidade = new Especialidade();
+			especialidade.setId(cursor.getInt(0));
+			especialidade.setNome(cursor.getString(1));
+			Log.i(TABELA, especialidade.getNome());
+			return especialidade;
+		} catch (Exception e) {
+			Log.e("", e.getMessage());
+			return null;
+		} finally {
+			cursor.close();
+		}
+	}
 }

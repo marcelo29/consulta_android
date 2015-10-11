@@ -5,6 +5,7 @@ import java.io.File;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -15,14 +16,14 @@ public class DBDAO extends SQLiteOpenHelper {
 	// nome do banco
 	public static final String DATABASE = "db_consulta";
 	// versao
-	public static final int VERSAO = 5;
+	public static final int VERSAO = 6;
 	// para exibicao no log cat
 	private static final String TAG = "appConsulta";
 
 	// tabelas do banco
-	private static String tbUsuario = "usuario", tbUsuarioLogado = "usuario_logado", tbLocal = "local_atendimento",
-			tbEspecialidade = "especialidade", tbMedico = "medico", tbSituacao = "situacao",
-			tbAgendaMedico = "agenda_medico", tbConsultaMarcada = "consulta_marcada";
+	private static String tbUsuario = "usuario", tbLocal = "local_atendimento", tbEspecialidade = "especialidade",
+			tbMedico = "medico", tbSituacao = "situacao", tbAgendaMedico = "agenda_medico",
+			tbConsultaMarcada = "consulta_marcada";
 
 	public DBDAO(Context context) {
 		super(context, DATABASE, null, VERSAO);
@@ -35,12 +36,6 @@ public class DBDAO extends SQLiteOpenHelper {
 		String ddl = "create table if not exists " + tbUsuario + "(_id integer primary key autoincrement, "
 				+ "login text, senha text, perfil text, email text)";
 		db.execSQL(ddl);
-
-		ddl = "create table if not exists " + tbUsuarioLogado + "(_id integer primary key autoincrement, "
-				+ "login text, senha text, perfil text, email text)";
-		db.execSQL(ddl);
-
-		db.execSQL("insert into " + tbUsuarioLogado + " values(null, null, null, null, null)");
 
 		ddl = "create table if not exists " + tbEspecialidade + "(_id integer primary key autoincrement, nome text)";
 		db.execSQL(ddl);
@@ -213,7 +208,6 @@ public class DBDAO extends SQLiteOpenHelper {
 	// deleta o banco
 	public void drop(SQLiteDatabase db) {
 		db.execSQL("drop table if exists " + tbUsuario);
-		db.execSQL("drop table if exists " + tbUsuarioLogado);
 		db.execSQL("drop table if exists " + tbLocal);
 		db.execSQL("drop table if exists " + tbConsultaMarcada);
 		db.execSQL("drop table if exists " + tbAgendaMedico);
@@ -223,4 +217,27 @@ public class DBDAO extends SQLiteOpenHelper {
 
 		Log.i(TAG, "*********** Drop rolou");
 	}
+	
+	// retorna o id da tabela
+	public int retornaIdTabela(String nome, String tabela) {
+		String sql = "select _id from " + tabela;
+
+		if (nome.isEmpty())
+			return 0;
+		else
+			sql = sql + " where nome = '" + nome + "'";
+
+		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
+
+		try {
+			cursor.moveToFirst();
+			return cursor.getInt(0);
+		} catch (Exception e) {
+			Log.e("", e.getMessage());
+			return 0;
+		} finally {
+			cursor.close();
+		}
+	}
+
 }

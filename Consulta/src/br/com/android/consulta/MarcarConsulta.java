@@ -1,17 +1,20 @@
 package br.com.android.consulta;
 
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -95,9 +98,12 @@ public class MarcarConsulta extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				int idEspecialidade = spnEspecialidade.getSelectedItemPosition();
-				int idLocal = spnLocal.getSelectedItemPosition();
-				int idMedico = spnMedico.getSelectedItemPosition();
+				DBDAO db = new DBDAO(MarcarConsulta.this);
+				// retorna o id da tabela pelo nome selecionado
+				int idEspecialidade = db.retornaIdTabela(spnEspecialidade.getSelectedItem().toString(),
+						"especialidade");
+				int idLocal = db.retornaIdTabela(spnLocal.getSelectedItem().toString(), "local_atendimento");
+				int idMedico = db.retornaIdTabela(spnMedico.getSelectedItem().toString(), "medico");
 				String stringData = spnData.getSelectedItem().toString();
 
 				lista = new AgendaMedicoDAO(MarcarConsulta.this).retornaAgendaMedico(idEspecialidade, idMedico, idLocal,
@@ -134,15 +140,26 @@ public class MarcarConsulta extends Activity {
 		// e os passa pro spinner msm procedimento para os outros
 		spnLocal.setAdapter(adpLocais);
 
-		ArrayList<Especialidade> especialidadeDao = new EspecialidadeDAO(this).listar();
+		ArrayList<Especialidade> especialidadeDao = new EspecialidadeDAO(MarcarConsulta.this).listar();
 		ArrayList<String> especialidades = new ArrayList<String>();
 		especialidades.add("");
 		for (int i = 0; i < especialidadeDao.size(); i++) {
 			especialidades.add(especialidadeDao.get(i).getNome());
 		}
-		ArrayAdapter<String> adpEspecialidades = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				especialidades);
+		ArrayAdapter<String> adpEspecialidades = new ArrayAdapter<String>(MarcarConsulta.this,
+				android.R.layout.simple_spinner_item, especialidades);
 		spnEspecialidade.setAdapter(adpEspecialidades);
+
+		spnEspecialidade.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				carregaMedicoPorEspecialidade();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
 
 		ArrayList<Medico> medicoDao = new MedicoDAO(this).listar(0);
 		ArrayList<String> medicos = new ArrayList<String>();
@@ -180,7 +197,6 @@ public class MarcarConsulta extends Activity {
 		switch (item.getItemId()) {
 		// caso a opcao mapa seja selecionada
 		case R.id.menu_mapa:
-
 			AlertDialog.Builder dialogo = new AlertDialog.Builder(MarcarConsulta.this);
 			dialogo.setNeutralButton("Ok", null);
 			// ver se a lista esta vazia
@@ -206,4 +222,19 @@ public class MarcarConsulta extends Activity {
 		}
 
 	}
+
+	// preenche medico pela especialidade selecionada
+	private void carregaMedicoPorEspecialidade() {
+		ArrayList<Medico> medicoDao = new MedicoDAO(MarcarConsulta.this)
+				.listar(spnEspecialidade.getSelectedItemPosition());
+		ArrayList<String> medicos = new ArrayList<String>();
+		medicos.add("");
+		for (int i = 0; i < medicoDao.size(); i++) {
+			medicos.add(medicoDao.get(i).getNome());
+		}
+		ArrayAdapter<String> adpMedicos = new ArrayAdapter<String>(MarcarConsulta.this,
+				android.R.layout.simple_spinner_item, medicos);
+		spnMedico.setAdapter(adpMedicos);
+	}
+
 }

@@ -50,9 +50,7 @@ public class MedicoDAO extends SQLiteOpenHelper {
 				medico.setId(cursor.getInt(0));
 				medico.setCmd(cursor.getInt(1));
 				medico.setNome(cursor.getString(2));
-				if (id != 0) {
-					medico.setEspecialidade(retornaEspecialidadeMedico(id));
-				}
+				medico.setEspecialidade(retornaEspecialidade(cursor.getInt(3)));
 				lista.add(medico);
 			}
 		} catch (Exception e) {
@@ -65,16 +63,16 @@ public class MedicoDAO extends SQLiteOpenHelper {
 	}
 
 	// retorna a especialidade do medico
-	public Especialidade retornaEspecialidadeMedico(int id) {
+	public Especialidade retornaEspecialidade(int id) {
 		String sql = "Select * from especialidade where _id = " + id;
 
 		Cursor cursor = getReadableDatabase().rawQuery(sql, null);
 
-		Especialidade especialidade = new Especialidade();
-
 		try {
+			Especialidade especialidade = new Especialidade();
 			especialidade.setId(cursor.getInt(0));
 			especialidade.setNome(cursor.getString(1));
+			Log.i(TABELA, especialidade.getNome());
 			return especialidade;
 		} catch (Exception e) {
 			Log.e("", e.getMessage());
