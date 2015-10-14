@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import br.com.android.consulta.Datas;
 import br.com.android.consulta.modelo.bean.AgendaMedico;
 import br.com.android.consulta.modelo.bean.ConsultaMarcada;
 import br.com.android.consulta.modelo.bean.Especialidade;
@@ -31,11 +32,12 @@ public class ConsultaMarcadaDAO extends SQLiteOpenHelper {
 	}
 
 	// retorna consultas marcadas pelo usuario logado
+	@SuppressWarnings("static-access")
 	public ArrayList<ConsultaMarcada> retornaConsultasMarcadas(int idUsuario) {
 		ArrayList<ConsultaMarcada> lista = new ArrayList<ConsultaMarcada>();
 
 		String sql = "select m.nome as medico, e.nome as especialidade, l.endereco as endereco, "
-				+ "a.data as data, a._id , l.nome, u._id, u.login from medico m, especialidade e, local_atendimento l, "
+				+ "a.data as data, a._id , l.nome, u._id, u.login, a.hora from medico m, especialidade e, local_atendimento l, "
 				+ "agenda_medico a, consulta_marcada c, usuario u "
 				+ "where m.id_especialidade = e._id and m._id = a.id_medico and l._id = a.id_local and a.situacao = 'M' "
 				+ "and c.id_agenda_medico = a._id and u._id = c.id_usuario";
@@ -65,7 +67,9 @@ public class ConsultaMarcadaDAO extends SQLiteOpenHelper {
 
 				agendaMedico.setLocalAtendimento(local);
 				agendaMedico.setMedico(medico);
-				agendaMedico.setData(cursor.getString(3));
+				Datas data = new Datas();
+				agendaMedico.setData(data.convertStringEmData(cursor.getString(3), "dd/MM/yyyy"));
+				agendaMedico.setHora(cursor.getString(8));
 				agendaMedico.setId(cursor.getInt(4));
 
 				// Log.i(DBDAO.DATABASE, agendaMedico.getData());

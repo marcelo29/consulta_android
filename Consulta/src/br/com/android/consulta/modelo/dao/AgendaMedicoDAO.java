@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import br.com.android.consulta.Datas;
 import br.com.android.consulta.modelo.bean.AgendaMedico;
 import br.com.android.consulta.modelo.bean.Especialidade;
 import br.com.android.consulta.modelo.bean.LocalAtendimento;
@@ -52,7 +53,7 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 			String stringData) {
 		ArrayList<AgendaMedico> lista = new ArrayList<AgendaMedico>();
 
-		String sql = "select a._id, m.nome, e.nome, l.nome, l.endereco, a.data "
+		String sql = "select a._id, m.nome, e.nome, l.nome, l.endereco, a.data, a.hora "
 				+ "from medico m, especialidade e, local_atendimento l, agenda_medico a where a.situacao = 'D'";
 
 		if (idEspecialidade != 0) {
@@ -102,7 +103,9 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 
 				agendaMedico.setLocalAtendimento(local);
 				agendaMedico.setMedico(medico);
-				agendaMedico.setData(cursor.getString(5));
+				Datas data = new Datas();
+				agendaMedico.setData(data.convertStringEmData(cursor.getString(5), "dd/MM/yyyy"));
+				agendaMedico.setHora(cursor.getString(6));
 				// Log.i(DBDAO.DATABASE, agendaMedico.getData());
 				// agendaMedico.setSituacao();
 
@@ -122,7 +125,7 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 	public ArrayList<AgendaMedico> retornaAgendaMedico() {
 		ArrayList<AgendaMedico> lista = new ArrayList<AgendaMedico>();
 
-		String sql = "select m.nome, e.nome, l.endereco, a.data, a._id "
+		String sql = "select m.nome, e.nome, l.endereco, a.data, a._id, a.hora "
 				+ "from medico m, especialidade e, local_atendimento l, agenda_medico a "
 				+ "where m.id_especialidade = e._id and m._id = a.id_medico and l._id = a.id_local and a.situacao = 'D'";
 
@@ -136,7 +139,6 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 			while (cursor.moveToNext()) {
 				// cursor.moveToFirst();
 
-				AgendaMedico agendaMedico = new AgendaMedico();
 				Medico medico = new Medico();
 				medico.setNome(cursor.getString(0));
 				// Log.i(DBDAO.DATABASE, medico.getNome());
@@ -149,12 +151,14 @@ public class AgendaMedicoDAO extends SQLiteOpenHelper {
 				LocalAtendimento local = new LocalAtendimento();
 				local.setEndereco(cursor.getString(2));
 				// Log.i(DBDAO.DATABASE, local.getEndereco());
-
+				AgendaMedico agendaMedico = new AgendaMedico();
+				agendaMedico.setId(cursor.getInt(4));
 				agendaMedico.setLocalAtendimento(local);
 				agendaMedico.setMedico(medico);
-				agendaMedico.setData(cursor.getString(3));
-				// Log.i(DBDAO.DATABASE, agendaMedico.getData());
-
+				Datas data = new Datas();
+				agendaMedico.setData(data.convertStringEmData(cursor.getString(3), "dd/MM/yyyy"));
+				agendaMedico.setHora(cursor.getString(5));
+				
 				lista.add(agendaMedico);
 			}
 			return lista;

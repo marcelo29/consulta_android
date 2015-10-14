@@ -4,17 +4,16 @@ public class Usuario {
 
 	// atributos do usuario
 	private int id;
-	private String login, senha, email; // perfil;
+	private String login, senha, email;
 	private Perfil perfil;
 
 	public Usuario() {
 
 	}
 
-	public Usuario(String usuario, String senha, String email, Perfil /* String */ perfil) {
+	public Usuario(String usuario, String senha, String email, Perfil perfil) {
 		this.login = usuario;
 		this.senha = senha;
-		// this.perfil = perfil;
 		this.perfil = perfil;
 		this.email = email;
 
@@ -45,11 +44,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Perfil /* String */ getPerfil() {
+	public Perfil getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(Perfil /* String */ perfil) {
+	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
 

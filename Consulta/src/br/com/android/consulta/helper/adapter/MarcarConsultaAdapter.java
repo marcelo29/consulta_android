@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import br.com.android.consulta.Datas;
 import br.com.android.consulta.R;
 import br.com.android.consulta.modelo.bean.AgendaMedico;
 import br.com.android.consulta.modelo.bean.Situacao;
@@ -72,7 +73,7 @@ public class MarcarConsultaAdapter extends BaseAdapter {
 		txtEspecialidade.setText(agendaMedico.getMedico().getEspecialidade().getNome());
 
 		TextView txtData = (TextView) layout.findViewById(R.id.txtData);
-		txtData.setText(agendaMedico.getData());
+		txtData.setText(agendaMedico.getDataHora());
 
 		final CheckBox chkConsulta = (CheckBox) layout.findViewById(R.id.chkConsulta);
 

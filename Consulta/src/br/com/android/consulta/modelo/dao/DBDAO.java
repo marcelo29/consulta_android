@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import br.com.android.consulta.Datas;
 
 // encapsula toda a criacao do banco
 public class DBDAO extends SQLiteOpenHelper {
@@ -16,7 +17,7 @@ public class DBDAO extends SQLiteOpenHelper {
 	// nome do banco
 	public static final String DATABASE = "db_consulta";
 	// versao
-	public static final int VERSAO = 6;
+	public static final int VERSAO = 9;
 	// para exibicao no log cat
 	private static final String TAG = "appConsulta";
 
@@ -86,41 +87,28 @@ public class DBDAO extends SQLiteOpenHelper {
 				"Av Desembargador Gonzaga 560, Cidades dos Funcionarios, Fortaleza, Ce");
 
 		// idMedico idLocal situacao data
-		insereAgendaMedico(db, 1, 2, "D", "03/10/2015");// 1
-		insereAgendaMedico(db, 2, 1, "D", "18/10/2015");// 2
-		insereAgendaMedico(db, 2, 2, "D", "19/10/2015");// 3
-		insereAgendaMedico(db, 2, 3, "D", "20/10/2015");// 4
-		insereAgendaMedico(db, 3, 1, "D", "21/10/2015");// 5
-		insereAgendaMedico(db, 3, 3, "D", "23/10/2015");// 6
-		insereAgendaMedico(db, 4, 1, "D", "24/10/2015");// 7
-		insereAgendaMedico(db, 4, 2, "D", "25/10/2015");// 8
-		insereAgendaMedico(db, 4, 3, "D", "26/10/2015");// 9
-		insereAgendaMedico(db, 5, 1, "D", "27/10/2015");// 10
-		insereAgendaMedico(db, 5, 2, "D", "28/10/2015");// 11
-		insereAgendaMedico(db, 5, 3, "D", "29/10/2015");// 12
-		insereAgendaMedico(db, 6, 1, "D", "30/10/2015");// 13
-		insereAgendaMedico(db, 6, 2, "D", "01/09/2015");// 14
-		insereAgendaMedico(db, 6, 3, "D", "02/09/2015");// 15
-		insereAgendaMedico(db, 7, 1, "D", "03/09/2015");// 16
-		insereAgendaMedico(db, 7, 2, "D", "04/09/2015");// 17
-		insereAgendaMedico(db, 7, 3, "D", "05/09/2015");// 18
-		insereAgendaMedico(db, 8, 1, "D", "06/09/2015");// 19
-		insereAgendaMedico(db, 8, 2, "D", "07/09/2015");// 20
-		insereAgendaMedico(db, 9, 2, "D", "10/09/2015");// 21
-		insereAgendaMedico(db, 9, 3, "D", "11/09/2015");// 22
-
-		/*
-		 * idUsuario idAgendaMedico situacao data insereConsultaMarcada(db, 1,
-		 * 1, "M", "12/09/2015"); insereConsultaMarcada(db, 1, 2, "M",
-		 * "18/10/2015");// 2 insereConsultaMarcada(db, 2, 4, "M",
-		 * "20/10/2015");// 4 insereConsultaMarcada(db, 1, 5, "M",
-		 * "21/10/2015");// 5 insereConsultaMarcada(db, 1, 10, "M",
-		 * "27/10/2015");// 10 insereConsultaMarcada(db, 2, 13, "M",
-		 * "30/10/2015");// 13 insereConsultaMarcada(db, 1, 17, "M",
-		 * "04/09/2015");// 17 insereConsultaMarcada(db, 1, 20, "M",
-		 * "07/09/2015");// 20 insereConsultaMarcada(db, 2, 22, "M",
-		 * "11/09/2015");// 22
-		 */
+		insereAgendaMedico(db, 1, 2, "D", "03/10/2015", "08:20:00");
+		insereAgendaMedico(db, 2, 1, "D", "18/10/2015", "11:00:00");
+		insereAgendaMedico(db, 2, 2, "D", "19/10/2015", "18:10:00");
+		insereAgendaMedico(db, 2, 3, "D", "20/10/2015", "18:15:20");
+		insereAgendaMedico(db, 3, 1, "D", "21/10/2015", "09:40:00");
+		insereAgendaMedico(db, 3, 3, "D", "23/10/2015", "08:10:00");
+		insereAgendaMedico(db, 4, 1, "D", "24/10/2015", "12:20:56");
+		insereAgendaMedico(db, 4, 2, "D", "25/10/2015", "13:00:56");
+		insereAgendaMedico(db, 4, 3, "D", "26/10/2015", "10:20:56");
+		insereAgendaMedico(db, 5, 1, "D", "27/10/2015", "11:45:00");
+		insereAgendaMedico(db, 5, 2, "D", "28/10/2015", "15:50:00");
+		insereAgendaMedico(db, 5, 3, "D", "29/10/2015", "01:45:00");
+		insereAgendaMedico(db, 6, 1, "D", "30/10/2015", "12:45:00");
+		insereAgendaMedico(db, 6, 2, "D", "01/09/2015", "13:15:00");
+		insereAgendaMedico(db, 6, 3, "D", "02/09/2015", "14:45:00");
+		insereAgendaMedico(db, 7, 1, "D", "03/09/2015", "06:35:00");
+		insereAgendaMedico(db, 7, 2, "D", "04/09/2015", "12:00:00");
+		insereAgendaMedico(db, 7, 3, "D", "05/09/2015", "14:40:00");
+		insereAgendaMedico(db, 8, 1, "D", "06/09/2015", "14:55:00");
+		insereAgendaMedico(db, 8, 2, "D", "07/09/2015", "14:45:00");
+		insereAgendaMedico(db, 9, 2, "D", "10/09/2015", "19:05:00");
+		insereAgendaMedico(db, 9, 3, "D", "11/09/2015", "21:00:00");
 
 	}
 
@@ -167,13 +155,14 @@ public class DBDAO extends SQLiteOpenHelper {
 	}
 
 	// cadastra agenda
-	private void insereAgendaMedico(SQLiteDatabase db, int idMedico, int idLocal, String situacao, String data) {
+	private void insereAgendaMedico(SQLiteDatabase db, int idMedico, int idLocal, String situacao, String data, String hora) {
 		ContentValues values = new ContentValues();
 
 		values.put("id_medico", idMedico);
 		values.put("id_local", idLocal);
 		values.put("situacao", situacao);
 		values.put("data", data);
+		values.put("hora", hora);
 
 		db.insert(tbAgendaMedico, null, values);
 	}

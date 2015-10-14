@@ -1,6 +1,7 @@
 package br.com.android.consulta;
 
 import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -65,6 +65,7 @@ public class MarcarConsulta extends Activity {
 				if (validaLista) {
 					if (!(listaMarcada.size() == 0)) {
 						for (int i = 0; i < listaMarcada.size(); i++) {
+							
 							new AgendaMedicoDAO(MarcarConsulta.this).MarcaConsulta(
 									new DBDAO(MarcarConsulta.this).getWritableDatabase(), listaMarcada.get(i).getId(),
 									usuario.getId());
@@ -161,24 +162,29 @@ public class MarcarConsulta extends Activity {
 			}
 		});
 
-		ArrayList<Medico> medicoDao = new MedicoDAO(this).listar(0);
-		ArrayList<String> medicos = new ArrayList<String>();
-		medicos.add("");
-		for (int i = 0; i < medicoDao.size(); i++) {
-			medicos.add(medicoDao.get(i).getNome());
-		}
-		ArrayAdapter<String> adpMedicos = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, medicos);
-		spnMedico.setAdapter(adpMedicos);
+		spnMedico();
 
 		ArrayList<AgendaMedico> agendaMedicoDao = new AgendaMedicoDAO(this).retornaAgendaMedico();
 		ArrayList<String> dataMedicoDisponivel = new ArrayList<String>();
 		dataMedicoDisponivel.add("");
 		for (int i = 0; i < agendaMedicoDao.size(); i++) {
-			dataMedicoDisponivel.add(agendaMedicoDao.get(i).getData());
+			dataMedicoDisponivel.add(agendaMedicoDao.get(i).getStringData());
 		}
 		ArrayAdapter<String> adpDatas = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 				dataMedicoDisponivel);
 		spnData.setAdapter(adpDatas);
+	}
+
+	private void spnMedico() {
+		ArrayList<Medico> medicoDao = new MedicoDAO(MarcarConsulta.this).listar(0);
+		ArrayList<String> medicos = new ArrayList<String>();
+		medicos.add("");
+		for (int i = 0; i < medicoDao.size(); i++) {
+			medicos.add(medicoDao.get(i).getNome());
+		}
+		ArrayAdapter<String> adpMedicos = new ArrayAdapter<String>(MarcarConsulta.this,
+				android.R.layout.simple_spinner_item, medicos);
+		spnMedico.setAdapter(adpMedicos);
 	}
 
 	// carrega menu

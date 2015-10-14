@@ -30,5 +30,6 @@
     <string name="endereco">Endereço</string>
     <string name="marcarConsulta">Marcar Consultas</string>
     <string name="desmarcarConsulta">Desmarcar</string>
+    <string name="aviso_consulta_indisponivel">Consulta indisponível para desmarcação, menos de 24 horas para a consulta</string>
 
 </resources>

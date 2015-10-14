@@ -1,18 +1,20 @@
 package br.com.android.consulta.modelo.bean;
 
+import java.util.Date;
+
 public class ConsultaMarcada {
 
 	private int id;
 	private Usuario usuario;
 	private AgendaMedico agendaMedico;
-	private String dataMarcacaoConsulta, dataCancelamento;
+	private Date dataMarcacaoConsulta, dataCancelamento;
 	private Situacao situacao;
 
 	public ConsultaMarcada() {
 
 	}
 
-	public ConsultaMarcada(int id, int idAgenda, Usuario user, String dataMarcacao, String dataCancelamento,
+	public ConsultaMarcada(int id, int idAgenda, Usuario user, Date dataMarcacao, Date dataCancelamento,
 			Situacao situacao) {
 		this.id = id;
 		this.usuario = user;
@@ -45,19 +47,19 @@ public class ConsultaMarcada {
 		this.agendaMedico = agendaMedico;
 	}
 
-	public String getDataMarcacaoConsulta() {
+	public Date getDataMarcacaoConsulta() {
 		return dataMarcacaoConsulta;
 	}
 
-	public void setDataMarcacaoConsulta(String dataMarcacaoConsulta) {
+	public void setDataMarcacaoConsulta(Date dataMarcacaoConsulta) {
 		this.dataMarcacaoConsulta = dataMarcacaoConsulta;
 	}
 
-	public String getDataCancelamento() {
+	public Date getDataCancelamento() {
 		return dataCancelamento;
 	}
 
-	public void setDataCancelamento(String dataCancelamento) {
+	public void setDataCancelamento(Date dataCancelamento) {
 		this.dataCancelamento = dataCancelamento;
 	}
 

@@ -1,12 +1,16 @@
 package br.com.android.consulta.modelo.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import br.com.android.consulta.Datas;
 
 public class AgendaMedico {
 
 	private int id;
 	private Medico medico;
-	private String data, hora;
+	private String /* data, */ hora;
+	private Date data;
 	private LocalAtendimento localAtendimento;
 	private Situacao situacao;
 	private ArrayList<ConsultaMarcada> listaConsultaMarcada;
@@ -16,7 +20,7 @@ public class AgendaMedico {
 		this.checkbox = false;
 	}
 
-	public AgendaMedico(int id, Medico medico, String data, String hora, LocalAtendimento localAtendimento,
+	public AgendaMedico(int id, Medico medico, Date /* String */ data, String hora, LocalAtendimento localAtendimento,
 			Situacao situacao, ArrayList<ConsultaMarcada> listaConsultaMarcada) {
 		this.id = id;
 		this.medico = medico;
@@ -43,16 +47,25 @@ public class AgendaMedico {
 		this.medico = medico;
 	}
 
-	public String getData() {
+	public Date/* String */ getData() {
 		return data;
 	}
 
-	public void setData(String date) {
+	public void setData(Date/* String */ date) {
 		this.data = date;
 	}
 
 	public String getHora() {
 		return hora;
+	}
+
+	public String getDataHora() {
+		String dataHora = new Datas().convertDataEmString(data) + " " + hora;
+		return dataHora;
+	}
+	
+	public String getStringData() {
+		return new Datas().convertDataEmString(data);
 	}
 
 	public void setHora(String hora) {
@@ -92,7 +105,7 @@ public class AgendaMedico {
 	}
 
 	public String corpoTexto(String situacao) {
-		return "Consulta "+situacao+" com: " + medico.getNome() + " no dia: " + data + " na Clinica: "
+		return "Consulta " + situacao + " com: " + medico.getNome() + " no dia: " + data + " na Clinica: "
 				+ localAtendimento.getNome() + " endereco: " + localAtendimento.getEndereco();
 	}
 }

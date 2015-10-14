@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,11 +37,6 @@ public class Login extends Activity {
 			// cria e popula o banco
 			db.onCreate(escrita);
 		}
-
-		/*
-		 * for(int i = 0; i < 2; i++) { Log.i("", new
-		 * LocalAtendimentoDAO(this).listar().get(i).getEndereco()); }
-		 */
 
 		// relaciona xml com codigo java
 		edtUsuario = (EditText) findViewById(R.id.edtUsuario);
@@ -111,6 +107,7 @@ public class Login extends Activity {
 		edtUsuario.setText("");
 		edtSenha.setText("");
 	}
+
 	// validas os campos
 	private boolean validacao(String usuario, String senha) {
 		boolean validacao = true;

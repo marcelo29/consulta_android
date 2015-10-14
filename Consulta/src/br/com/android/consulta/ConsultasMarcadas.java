@@ -1,12 +1,14 @@
 package br.com.android.consulta;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +42,7 @@ public class ConsultasMarcadas extends Activity {
 		desmarcarConsulta();
 	}
 
+	// desmarca a consulta
 	private void desmarcarConsulta() {
 		btnDesmarcarConsulta.setOnClickListener(new OnClickListener() {
 
@@ -51,18 +54,27 @@ public class ConsultasMarcadas extends Activity {
 				if (!(listaDesmarcar.size() == 0)) {
 					for (int i = 0; i < listaDesmarcar.size(); i++) {
 						// desmarcar consulta passando id da agenda e do usuario
-						new AgendaMedicoDAO(ConsultasMarcadas.this).DesmarcaConsulta(
-								new DBDAO(ConsultasMarcadas.this).getWritableDatabase(),
-								listaDesmarcar.get(i).getAgendaMedico().getId(), usuario.getId());
+						Date dataConsulta = new Datas()
+								.convertStringEmData(listaDesmarcar.get(i).getAgendaMedico().getDataHora());
+						// checa se falta menos de 24horas para a consulta
+						if (new Datas().cancelamentoDisponivel(dataConsulta, new Date())) {
+							new AgendaMedicoDAO(ConsultasMarcadas.this).DesmarcaConsulta(
+									new DBDAO(ConsultasMarcadas.this).getWritableDatabase(),
+									listaDesmarcar.get(i).getAgendaMedico().getId(), usuario.getId());
 
-						// envia email avisando q foi desmarcada
-						Intent intent = new Intent(Intent.ACTION_SEND);
-						intent.setType("message/rfc822");
-						intent.putExtra(Intent.EXTRA_EMAIL, new String[] { usuario.getEmail() });
-						intent.putExtra(Intent.EXTRA_SUBJECT, "Consulta desmarcada com sucesso");
-						intent.putExtra(Intent.EXTRA_TEXT,
-								listaDesmarcar.get(i).getAgendaMedico().corpoTexto("desmarcada"));
-						startActivity(intent);
+							// envia email avisando q foi desmarcada
+							Intent intent = new Intent(Intent.ACTION_SEND);
+							intent.setType("message/rfc822");
+							intent.putExtra(Intent.EXTRA_EMAIL, new String[] { usuario.getEmail() });
+							intent.putExtra(Intent.EXTRA_SUBJECT, "Consulta desmarcada com sucesso");
+							intent.putExtra(Intent.EXTRA_TEXT,
+									listaDesmarcar.get(i).getAgendaMedico().corpoTexto("desmarcada"));
+							startActivity(intent);
+
+						} else {
+							dialogo.setMessage(R.string.aviso_consulta_indisponivel);
+							dialogo.show();
+						}
 					}
 				} else {
 					dialogo.setMessage(R.string.aviso_nenhuma_consulta_marcada);
